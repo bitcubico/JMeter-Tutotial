@@ -86,9 +86,27 @@ Es recomendable descargar JMeter desde la página oficial [jmeter.apache.org](ht
  - **Aserciones**: Son un conjunto de elementos encargadde la verificación de los datos provenientes de los servidores. Con estos podemos identificar cuando una ejecución tuvo o no problemas.
  - **Postprocesadores**: Estos ejecununa acción después de la ejección de un ***muestreados los binarios de JMeter, se debe ir al directorio ***bin*** y ejecutar el archivo llamado ***ApacheJMeter.jar***.or**. Es decir, toma datos dloresultados y los lmacena en variables, que podrán ser usadas por otras pruebas, o verifica su contenido para validar que todo esté correcto.
  - **Controladores lógicos**: Son los elementos lógicos que nos permiten controlar el comportamiento de las pruebas. Esto se refiere a los elementos de un lenguaje de programación que nos permiten ejecutar fracciones de código de forma repetitiva o evaluar cuándo ingresar o no a realizar una prueba (for, while, if, do, etc) y así darle sentido a la ejecución de un script.
-
+ 
 ## 2. Creación de **SCRIPTS** con ejemplos reales
 
 En esta sección realizaremos paso a paso grabaciones y ejecuciones de scripts junto con el análisis de los datos arrojados por los mismos.
 
 ### Grabación de script (HTTP proxy record - Recursos embebidos)
+
+#### Pasos del Script 1
+Plan de pruebas: El sitio [blazedemo.com](http://blazedemo.com/) requiere garantizar las siguientes características y funcionalidades:
+
+##### Pruebas de carga
+
+
+##### Funcionalidades
+|Id|Descripción|Url|
+|--|--|--|
+| 1 | El home debe  |  |
+
+
+ 1. **Agregamos un Test Script Recorder o Servidor Proxy HTTP**: Su función es escuchar por un puerto específico todo el tráfico que pase por ahí.
+ 2. **Agregamos el grupo de hilos**: Este grupo de hilos guardará todos los datos de los request que se envíen por JMeter en las pruebas.
+ 3. **Configurar el proxy del navegador**: Se debe configurar el navegador para que establezca la comunicación por medio del proxy y el puerto que usa el Test Script Recorder
+ 4. Aceptamos el certificado que genera JMeter
+ 5. Grabamos todas las funcionalidades de la página que nos interesa probar
