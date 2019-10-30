@@ -86,7 +86,7 @@ Es recomendable descargar JMeter desde la página oficial [jmeter.apache.org](ht
  - **Aserciones**: Son un conjunto de elementos encargadde la verificación de los datos provenientes de los servidores. Con estos podemos identificar cuando una ejecución tuvo o no problemas.
  - **Postprocesadores**: Estos ejecununa acción después de la ejección de un ***muestreados los binarios de JMeter, se debe ir al directorio ***bin*** y ejecutar el archivo llamado ***ApacheJMeter.jar***.or**. Es decir, toma datos dloresultados y los lmacena en variables, que podrán ser usadas por otras pruebas, o verifica su contenido para validar que todo esté correcto.
  - **Controladores lógicos**: Son los elementos lógicos que nos permiten controlar el comportamiento de las pruebas. Esto se refiere a los elementos de un lenguaje de programación que nos permiten ejecutar fracciones de código de forma repetitiva o evaluar cuándo ingresar o no a realizar una prueba (for, while, if, do, etc) y así darle sentido a la ejecución de un script.
- 
+
 ## 2. Creación de **SCRIPTS** con ejemplos reales
 
 En esta sección realizaremos paso a paso grabaciones y ejecuciones de scripts junto con el análisis de los datos arrojados por los mismos.
@@ -105,8 +105,34 @@ Plan de pruebas: El sitio [blazedemo.com](http://blazedemo.com/) requiere garant
 | 1 | El home debe  |  |
 
 
- 1. **Agregamos un Test Script Recorder o Servidor Proxy HTTP**: Su función es escuchar por un puerto específico todo el tráfico que pase por ahí.
- 2. **Agregamos el grupo de hilos**: Este grupo de hilos guardará todos los datos de los request que se envíen por JMeter en las pruebas.
- 3. **Configurar el proxy del navegador**: Se debe configurar el navegador para que establezca la comunicación por medio del proxy y el puerto que usa el Test Script Recorder
- 4. Aceptamos el certificado que genera JMeter
- 5. Grabamos todas las funcionalidades de la página que nos interesa probar
+1. **Agregamos un Test Script Recorder o Servidor Proxy HTTP**: Su función es escuchar por un puerto específico todo el tráfico que pase por ahí.
+2. **Agregamos el grupo de hilos**: Este grupo de hilos guardará todos los datos de los request que se envíen por JMeter en las pruebas.
+3. **Configurar el proxy del navegador**: Se debe configurar el navegador para que establezca la comunicación por medio del proxy y el puerto que usa el Test Script Recorder
+4. **Aceptamos el certificado que genera JMeter**: este certificado es generado automáticamente por JMeter
+5. **Grabamos** todas las funcionalidades de la página que nos interesa probar
+6. **Agregamos los listener** que nos ayudarán a interpretar lo que está sucediendo:
+         - ***View Results Tree***: Este nos muestra el estado de la petición, lo que se envió y lo que se recibió del servidor
+         - ***Gráfico o Aggregate Graph***: Este nos muestra los tiempos de respuesta del servidor durante la prueba. Con este determinamos cómo se comporta el servidor durante el tiempo que ejecutamos la prueba.
+         - ***Active Threads Over Time***: Este nos muestra la cantidad de usuarios activos a lo largo de la prueba en cada intervalo de tiempo.
+         - ***View Results in Table***: Este nos muestra el estado de la petición, tiempos de respuesta, peso de estas.
+         - ***Transactions per Second***: Este nos muestra las cantidad de transacciones por segundo que se ejecutan y a que control se le está haciendo.
+7. **Agregar Temporizadores**: Estos nos permiten simular las interacciones de los usuarios con la aplicación lo más cercano posible a los tiempos en que estas se dan. Un usuario por lo general no ejecuta las acciones como un robot, que es el caso de JMeter, las ejecuta en tiempos irregulares y dependiendo de muchos factores y las aplicaciones no responden siempre en tiempos fijos, estos también dependen de muchas variables. 
+Existen varios tipos de temporizadores, estudiemos los que más se usan:
+         - ***Temporizador CONSTANTE***: Este se usa para agregar un tiempo de espera entre peticiones. Se puede configurar a nivel general o para una petición en particular. Generalmente este temporizador se usa cuando se desea dar una espera a la aplicación para que cargue todos sus componentes.
+Estos tiempos deben tenerse en cuenta al finalizar las pruebas ya que altera el tiempo total de la ejecución.
+         - ***Temporizador ALEATORIO UNIFORME***:  Este pausa las peticiones en cada hilo durante un tiempo aleatorio. Este puede acercarnos más a lo que son las interacciones de los usuarios con las aplicaciones ya que las interacciones no se dan en tiempos constantes.
+Estos tiempos deben tenerse en cuenta al finalizar las pruebas ya que altera el tiempo total de la ejecución.
+8. **Agregamos las ASERCIONES**: Estas son ***validaciones*** que nos permiten evaluar si la respuesta del servidor a una petición se puede considerar como correcta o no. Existen muchas aserciones y entre esas las más usadas son:
+          - ***Aserciones de RESPUESTA***: Estas nos permiten buscar la respuesta del servidor identificadores que me permitan validar si la respuesta es correcta o no.
+          - ***Aserciones de DURACIÓN***: Estas nos permiten identificar las peticiones que duran más del tiempo del especificado en esta.
+9. **Agregamos PARAMETRIZACIONES**: Las parametrizaciones nos permiten enviar datos dinámicos en cada ejecución del test.
+10. **Configuramos los datos de CARGA**: Esta configuración se realiza en el grupo de hilos del escenario a evaluar y se configuran los siguientes elementos:
+           - ***Número de hilos (usuarios)***: En esta especificamos el número de usuarios que van a interactuar con la aplicación en el intervalo de tiempo especificado. 
+           - ***Ramp-Up Period***: En esta especificamos el tiempo que tienen los usuarios indicados para realizar todo el test.
+           - ***Loop Count***: Este me permite especificar cuantas veces se debe repetir el ciclo o si va a ejecutarse por siempre.
+
+Con esto ya definido, podemos entonces parametrizar la prueba, usando datos dinámicos definidos por nosotros, de modo que la prueba se asemeje los más posible a la realidad.
+
+Programamos la prueba para que se ejecute desde consola:
+
+    jmeter -E https -n -t SATAdmin.jmx -l log.txt
